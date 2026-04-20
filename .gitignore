@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Virtual env
+.venv_kg_rag/
+venv_kg_rag/
+
+# macOS
+.DS_Store
+
+# Env
+.env.example
+
+# Streamlit cache
+.streamlit/secrets.toml
+
+# IDE
+.vscode/
+.idea/
+
+# Coverage
+htmlcov/
+.coverage
+
+# Logs
+*.log

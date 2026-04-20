@@ -1,0 +1,71 @@
+Questo progetto realizza un assistente documentale basato su RAG e Knowledge Graph.
+L’obiettivo è combinare retrieval vettoriale, rappresentazione strutturata della conoscenza e risposta sintetica finale.
+
+L’architettura applicativa usa FastAPI come backend API e Streamlit come interfaccia utente.
+FastAPI gestisce upload documenti, ricerca, orchestrazione della pipeline e integrazione con i servizi interni.
+Streamlit offre una dashboard per l’ingestion dei documenti, una pagina di ricerca e una futura vista dedicata al grafo.
+
+Per la componente vettoriale viene usato Qdrant.
+Qdrant memorizza i chunk testuali e i relativi embedding, così da consentire retrieval semantico veloce e ranking dei risultati.
+Ogni chunk contiene metadati come document_id, chunk_id, testo, offset iniziale, offset finale e nome del file sorgente.
+
+Per la componente di grafo viene usato Neo4j.
+Neo4j memorizza documenti, chunk, entità e relazioni.
+Ogni documento può avere più chunk.
+Ogni documento può menzionare più entità.
+Le entità possono essere collegate tra loro tramite relazioni come RELATED_TO.
+
+Il progetto usa anche OpenAI per generare embedding e risposta finale.
+Quando la chiave API non è disponibile, il sistema usa provider dummy per test e sviluppo locale.
+Questo consente di mantenere attiva la pipeline anche in assenza di servizi esterni reali.
+
+Il flusso di ingestion funziona così.
+Un utente carica un file PDF, TXT o Markdown.
+Il backend estrae il testo.
+Successivamente il testo viene normalizzato e spezzato in chunk con overlap.
+Ogni chunk viene trasformato in embedding.
+Gli embedding vengono salvati in Qdrant.
+In parallelo il documento e i chunk vengono registrati in Neo4j.
+
+Il progetto estrae anche entità note dal testo.
+Per esempio può rilevare Neo4j, Qdrant, FastAPI, Streamlit, OpenAI, RAG, KG e Knowledge Graph.
+Quando rileva RAG insieme a Neo4j o Qdrant, il sistema può inferire una relazione RELATED_TO.
+Quando rileva KG insieme a Neo4j, può inferire un’altra relazione RELATED_TO.
+Questa logica iniziale è rule-based, ma in futuro verrà sostituita da un estrattore LLM-driven.
+
+La ricerca funziona in modo ibrido.
+Prima viene generato un embedding per la domanda dell’utente.
+Poi Qdrant restituisce i chunk più simili semanticamente.
+Successivamente Neo4j viene interrogato per recuperare i chunk del documento e le entità collegate.
+Infine il sistema costruisce una risposta sintetica in linguaggio naturale.
+
+Un caso d’uso tipico è questo.
+Un utente chiede: quali tecnologie usa il progetto?
+La parte RAG recupera chunk che parlano di FastAPI, Streamlit, Qdrant e Neo4j.
+La parte Knowledge Graph recupera le entità Technology e Concept già collegate al documento.
+Il sistema può quindi rispondere che il progetto usa FastAPI, Streamlit, Qdrant, Neo4j e, in alcuni flussi, OpenAI.
+
+Un secondo caso d’uso è la domanda: come interagiscono RAG e KG nel sistema?
+In questo caso il retrieval vettoriale recupera chunk che descrivono pipeline, orchestrazione e risposta finale.
+Il grafo evidenzia che RAG è RELATED_TO a Neo4j e a Qdrant, mentre KG è RELATED_TO a Neo4j.
+Questo permette di produrre una risposta più strutturata rispetto al solo retrieval testuale.
+
+Dal punto di vista ingegneristico, il progetto è organizzato in moduli.
+Ci sono servizi per parsing documenti, chunking, embeddings, entity extraction, answer generation e search.
+Ci sono repository dedicati a Qdrant e Neo4j.
+Ci sono route FastAPI per upload documenti e ricerca.
+Ci sono pagine Streamlit per ingestion e search chat.
+
+Nel prossimo futuro il progetto potrà evolvere in varie direzioni.
+Si potrà aggiungere reranking dei chunk.
+Si potrà migliorare l’estrazione di entità e relazioni tramite LLM.
+Si potrà introdurre una vista grafo interattiva.
+Si potranno anche aggiungere citazioni, provenance più precisa e answer synthesis più robusta.
+
+In sintesi, questo sistema combina RAG, Neo4j, Qdrant, FastAPI e Streamlit per costruire un assistente documentale ibrido.
+Qdrant serve per il retrieval vettoriale.
+Neo4j serve per il Knowledge Graph.
+FastAPI coordina la pipeline.
+Streamlit rende il sistema usabile.
+OpenAI può essere usato per embedding e risposta finale.
+L’obiettivo finale è ottenere un assistente che sia allo stesso tempo ricercabile, spiegabile e strutturato.

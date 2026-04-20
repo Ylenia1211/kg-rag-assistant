@@ -1,0 +1,3 @@
+Questo progetto usa Neo4j, Qdrant, FastAPI e Streamlit.
+Vogliamo costruire un sistema RAG con un Knowledge Graph.
+RAG e KG sono collegati a Neo4j e Qdrant.
