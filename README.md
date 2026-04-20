@@ -1,44 +1,65 @@
 # KG-RAG Assistant
 
-Hybrid Retrieval-Augmented Generation system combining:
+Hybrid Retrieval-Augmented Generation platform combining vector search and Knowledge Graph reasoning.
 
-- **Qdrant** for vector search
-- **Neo4j** for Knowledge Graph storage
-- **FastAPI** backend APIs
-- **Streamlit** frontend UI
-- local / pluggable LLM providers
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white">
+  <img src="https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi&logoColor=white">
+  <img src="https://img.shields.io/badge/Streamlit-Frontend-FF4B4B?logo=streamlit&logoColor=white">
+  <img src="https://img.shields.io/badge/Qdrant-Vector_DB-DC244C">
+  <img src="https://img.shields.io/badge/Neo4j-Graph_DB-4581C3?logo=neo4j&logoColor=white">
+  <img src="https://img.shields.io/badge/Pytest-Tested-0A9EDC?logo=pytest&logoColor=white">
+</p>
 
 ---
 
-# Features
+## Overview
 
-## Document Ingestion
+KG-RAG Assistant is a hybrid AI system that combines:
 
-Upload PDF / TXT / Markdown files.
+- **Qdrant** for semantic vector retrieval
+- **Neo4j** for Knowledge Graph storage and graph context
+- **FastAPI** for backend APIs
+- **Streamlit** for the user interface
+- **pluggable LLM providers** for final answer synthesis
 
-Pipeline:
+This architecture improves retrieval quality by combining **semantic similarity** with **structured graph reasoning**.
 
-1. Parse text
-2. Chunk text with overlap
-3. Generate embeddings
-4. Store vectors in Qdrant
-5. Create graph nodes in Neo4j
-6. Extract entities and relations
+---
 
-## Hybrid Search
 
-Query flow:
+## Features
 
-1. Embed user question
-2. Semantic retrieval from Qdrant
-3. Graph context retrieval from Neo4j
-4. Final synthesized answer
+### Document Ingestion
+- Upload PDF / TXT / Markdown files
+- Parse and normalize text
+- Chunk text with overlap
+- Generate embeddings
+- Store chunks in Qdrant
+- Create graph nodes in Neo4j
+- Extract entities and infer relations
+
+### Hybrid Search
+- Embed user questions
+- Retrieve semantically relevant chunks from Qdrant
+- Recover graph context from Neo4j
+- Generate a final synthesized answer
+
+---
+
+## UI Preview
 
 ### Search & Chat
 
 <p align="center">
-  <img src="assets/search.png" width="950">
+  <img src="assets/search.png" width="95%">
 </p>
+
+The interface shows:
+- the final synthesized answer
+- vector retrieval results from Qdrant
+- graph context from Neo4j
+- extracted entities linked to the retrieved documents
 
 ## UI
 
